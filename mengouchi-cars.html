@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mengouchi Cars &mdash; Premium Car Rental</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root{--gold:#c49617;--gold-light:#E8C97A;--gold-dark:#8B6914;--black:#080808;--dark2:#1A1A1A;--gray:#888;--light:#e4e0d9;}
+  body.light{--black:#f5f5f0;--dark2:#ffffff;--light:#1a1a1a;--gray:#666;}
+  body.light{background:#f5f5f0;color:#1a1a1a;}
+  body.light #topbar{background:rgba(245,245,240,0.97)!important;border-bottom:1px solid rgba(196,150,23,0.2);}
+  body.light #topbar .logo{color:var(--gold);}
+  body.light #topbar .nav-links a{color:#1a1a1a;}
+  body.light #topbar .btn-booknow{border-color:var(--gold);color:var(--gold);}
+  body.light #topbar .btn-booknow:hover{background:var(--gold);color:#fff;}
+  body.light .hero{background:radial-gradient(ellipse at 20% 50%,rgba(196,150,23,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(196,150,23,0.05) 0%,transparent 40%),linear-gradient(135deg,#f0ede8 0%,#f8f6f2 100%)!important;}
+  body.light .hero::before{color:var(--gold)!important;text-shadow:none!important;}
+  body.light .hero h1{color:#1a1a1a;}
+  body.light .hero p{color:#444;opacity:1;}
+  body.light .btn-outline{border-color:rgba(0,0,0,0.25);color:#1a1a1a;}
+  body.light .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  body.light .search-section{background:#fff;border-color:rgba(196,150,23,0.25);}
+  body.light .form-group input,body.light .form-group select{background:#f9f7f3;border-color:rgba(196,150,23,0.3);color:#1a1a1a;}
+  body.light section{background:#f5f5f0!important;}
+  body.light .why-section{background:#ffffff!important;border-color:rgba(196,150,23,0.15);}
+  body.light .reviews-section{background:#f5f5f0!important;}
+  body.light .review-card{background:#ffffff!important;border-color:rgba(196,150,23,0.2);box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+  body.light .review-text{color:#333!important;opacity:1;}
+  body.light .reviewer-name{color:#1a1a1a!important;}
+  body.light .car-card{background:#ffffff;border-color:rgba(196,150,23,0.15);box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+  body.light .car-card:hover{box-shadow:0 8px 40px rgba(0,0,0,0.12);border-color:rgba(196,150,23,0.4);}
+  body.light .car-img-wrap{background:linear-gradient(135deg,#f0ede8,#e8e4de);}
+  body.light .car-name{color:#1a1a1a;}
+  body.light .car-specs{border-color:rgba(0,0,0,0.08);}
+  body.light .modal{background:#fff;}
+  body.light .price-summary{background:rgba(196,150,23,0.05);}
+  body.light footer{background:#1a1a1a;}
+  body.light .footer-logo{color:var(--gold);}
+  body.light .section-title{color:#1a1a1a;}
+  body.light .why-item h3{color:#1a1a1a;}
+  body.light .contact-item h4{color:#1a1a1a;}
+  body.light .contact-textarea{background:#fff;border-color:rgba(196,150,23,0.25);color:#1a1a1a;}
+  body.light .hero-badge{border-color:var(--gold);color:var(--gold);}
+  body.light .map-wrap{border-color:rgba(196,150,23,0.25);box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+  body.light .map-label{background:#fff;}
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--light);font-family:"Montserrat",sans-serif;font-weight:300;overflow-x:hidden;transition:background 0.4s,color 0.4s;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px;}
+
+  /* NAVBAR */
+  #topbar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;background:transparent;transition:background 0.4s;}
+  #topbar.scrolled{background:rgba(8,8,8,0.97);border-bottom:1px solid rgba(201,168,76,0.15);backdrop-filter:blur(10px);}
+  #topbar .logo{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;letter-spacing:3px;color:var(--gold);text-decoration:none;flex-shrink:0;z-index:2;}
+  #topbar .logo span{color:var(--light);font-weight:300;}
+  #topbar .nav-links{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:50px;list-style:none;transition:opacity 0.3s,visibility 0.3s;}
+  #topbar.scrolled .nav-links{opacity:0;visibility:hidden;}
+  #topbar .nav-links a{color:var(--light);text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.8;transition:opacity 0.3s,color 0.3s;cursor:pointer;}
+  #topbar .nav-links a:hover{opacity:1;color:var(--gold);}
+  .topbar-right{display:flex;align-items:center;gap:10px;z-index:2;flex-shrink:0;}
+  .theme-toggle{background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;font-size:15px;border-radius:50%;}
+  .theme-toggle:hover{background:var(--gold);color:var(--black);}
+  .lang-toggle{background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:6px 11px;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+  .lang-toggle:hover{background:var(--gold);color:var(--black);}
+  .btn-booknow{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px 22px;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;white-space:nowrap;}
+  .btn-booknow:hover{background:var(--gold);color:var(--black);}
+
+  /* HERO */
+  .hero{min-height:100vh;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.04) 0%,transparent 40%),linear-gradient(135deg,#050505 0%,#0a0a0a 100%);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:120px 60px 80px;position:relative;overflow:hidden;}
+  @keyframes marqueeSlide{0%{transform:translateY(-50%) translateX(0);}100%{transform:translateY(-50%) translateX(-50%);}}
+  @keyframes goldPulse{0%,100%{opacity:0.06;}50%{opacity:0.18;}}
+  .hero::before{content:"MENGOUCHI \B7 MENGOUCHI \B7 MENGOUCHI \B7 MENGOUCHI \B7";position:absolute;left:0;top:50%;font-family:"Cormorant Garamond",serif;font-size:220px;font-weight:700;color:var(--gold);letter-spacing:10px;white-space:nowrap;pointer-events:none;animation:marqueeSlide 18s linear infinite,goldPulse 3s ease-in-out infinite;width:max-content;opacity:0.06;}
+  .hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:10px;letter-spacing:4px;text-transform:uppercase;padding:7px 20px;margin-bottom:30px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.2s;}
+  .hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(44px,7vw,96px);font-weight:300;line-height:1.05;max-width:700px;margin-bottom:28px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.4s;}
+  .hero h1 em{font-style:italic;color:var(--gold);}
+  .hero p{max-width:440px;line-height:1.8;font-size:14px;opacity:0.6;margin-bottom:48px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.6s;}
+  .hero-btns{display:flex;gap:16px;align-items:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.8s;}
+  .btn-gold{background:var(--gold);color:var(--black);padding:14px 36px;font-family:"Montserrat",sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;border:none;cursor:pointer;font-weight:600;transition:all 0.3s;text-decoration:none;display:inline-block;white-space:nowrap;}
+  .btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);}
+  .btn-outline{background:transparent;color:var(--light);padding:14px 36px;font-family:"Montserrat",sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.25);cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;white-space:nowrap;}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .hero-stats{position:absolute;bottom:50px;right:60px;display:flex;gap:50px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:1s;}
+  .stat{text-align:center;}
+  .stat-num{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:600;color:var(--gold);line-height:1;}
+  .stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0.5;margin-top:6px;}
+
+  /* SEARCH */
+  .search-section{background:var(--dark2);border-top:1px solid rgba(201,168,76,0.2);border-bottom:1px solid rgba(201,168,76,0.2);padding:40px 60px;}
+  .search-title{font-family:"Cormorant Garamond",serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+  .search-form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:16px;align-items:end;}
+  .form-group{display:flex;flex-direction:column;gap:8px;}
+  .form-group label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:0.8;}
+  .form-group input,.form-group select{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);color:var(--light);padding:13px 16px;font-family:"Montserrat",sans-serif;font-size:13px;outline:none;transition:border 0.3s;-webkit-appearance:none;}
+  .form-group input:focus,.form-group select:focus{border-color:var(--gold);}
+  .form-group select option{background:var(--dark2);}
+
+  section{padding:100px 60px;}
+  .section-header{margin-bottom:60px;}
+  .section-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;}
+  .section-title{font-family:"Cormorant Garamond",serif;font-size:clamp(34px,4vw,56px);font-weight:300;line-height:1.1;}
+  .section-title em{font-style:italic;color:var(--gold);}
+  .section-line{width:60px;height:1px;background:var(--gold);margin-top:20px;}
+
+  /* FILTER */
+  .filter-tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}
+  .filter-tab{background:transparent;border:1px solid rgba(201,168,76,0.25);color:var(--light);padding:8px 22px;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;opacity:0.6;}
+  .filter-tab:hover,.filter-tab.active{background:var(--gold);color:var(--black);border-color:var(--gold);opacity:1;}
+
+  /* CARS */
+  .cars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+  .car-card{background:var(--dark2);overflow:hidden;cursor:pointer;transition:transform 0.4s;border:1px solid rgba(201,168,76,0.08);}
+  .car-card:hover{transform:translateY(-6px);border-color:rgba(201,168,76,0.3);}
+  .car-card.unavailable{opacity:0.6;cursor:default;}
+  .car-card.unavailable:hover{transform:none;border-color:rgba(201,168,76,0.08);}
+  .car-img-wrap{height:220px;background:linear-gradient(135deg,#1a1a1a,#222);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .car-img-wrap img{width:100%;height:220px;object-fit:cover;}
+  .car-badge{position:absolute;top:16px;left:16px;background:var(--gold);color:var(--black);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;font-weight:600;}
+  .car-avail{position:absolute;top:16px;right:16px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;font-weight:700;border-radius:2px;}
+  .avail-yes{background:rgba(0,210,100,0.2);color:#00e070;border:1.5px solid rgba(0,210,100,0.55);text-shadow:0 0 8px rgba(0,220,110,0.6);}
+  .avail-no{background:rgba(220,40,40,0.2);color:#ff5050;border:1.5px solid rgba(220,40,40,0.55);text-shadow:0 0 8px rgba(220,40,40,0.5);}
+  .car-info{padding:28px;}
+  .car-name{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;margin-bottom:6px;}
+  .car-model{font-size:11px;opacity:0.45;letter-spacing:1px;margin-bottom:20px;}
+  .car-specs{display:flex;gap:24px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(128,128,128,0.15);}
+  .spec{font-size:11px;opacity:0.55;display:flex;align-items:center;gap:6px;}
+  .spec-icon{color:var(--gold);}
+  .car-footer{display:flex;align-items:center;justify-content:space-between;}
+  .car-price-label{font-size:9px;letter-spacing:1.5px;opacity:0.4;text-transform:uppercase;}
+  .car-price{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:600;color:var(--gold);line-height:1;}
+  .car-price span{font-size:13px;opacity:0.5;font-family:"Montserrat",sans-serif;font-weight:300;}
+  .book-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:11px 22px;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+  .book-btn:hover{background:var(--gold);color:var(--black);}
+  .book-btn:disabled{opacity:0.35;cursor:not-allowed;border-color:#666;color:#666;}
+  .book-btn:disabled:hover{background:transparent;color:#666;}
+
+  /* WHY */
+  .why-section{background:var(--dark2);border-top:1px solid rgba(201,168,76,0.1);border-bottom:1px solid rgba(201,168,76,0.1);}
+  .why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:32px;margin-top:60px;}
+  .why-item{text-align:center;}
+  .why-icon{width:64px;height:64px;border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;background:rgba(201,168,76,0.05);transition:all 0.3s;}
+  .why-item:hover .why-icon{background:rgba(201,168,76,0.12);border-color:var(--gold);}
+  .why-item h3{font-family:"Cormorant Garamond",serif;font-size:20px;margin-bottom:12px;}
+  .why-item p{font-size:12px;line-height:1.8;opacity:0.5;}
+
+  /* REVIEWS */
+  .reviews-section{background:var(--black);padding:100px 60px;}
+  .reviews-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:60px;}
+  .review-card{background:var(--dark2);border:1px solid rgba(201,168,76,0.12);padding:32px;position:relative;transition:transform 0.3s,border-color 0.3s;}
+  .review-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,0.35);}
+  .review-card::before{content:"\201C";position:absolute;top:16px;right:24px;font-family:"Cormorant Garamond",serif;font-size:80px;font-weight:700;color:var(--gold);opacity:0.15;line-height:1;}
+  .review-stars{display:flex;gap:3px;margin-bottom:16px;}
+  .review-stars span{color:#F4B942;font-size:14px;}
+  .review-text{font-size:13px;line-height:1.8;opacity:0.75;margin-bottom:24px;font-style:italic;}
+  .review-divider{width:30px;height:1px;background:var(--gold);opacity:0.4;margin-bottom:16px;}
+  .reviewer-info{display:flex;align-items:center;gap:12px;}
+  .reviewer-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--black);display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;flex-shrink:0;}
+  .reviewer-name{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:600;}
+  .reviewer-meta{font-size:10px;opacity:0.45;letter-spacing:1px;margin-top:2px;}
+  .google-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;opacity:0.5;margin-top:4px;}
+  .google-g{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#4285F4 0%,#34A853 50%,#FBBC05 75%,#EA4335 100%);display:inline-block;flex-shrink:0;}
+
+  /* MAP */
+  .map-wrap{margin-top:50px;border:1px solid rgba(201,168,76,0.2);overflow:hidden;}
+  .map-label{display:flex;align-items:center;gap:10px;padding:14px 20px;background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.15);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+  .map-wrap iframe{display:block;width:100%;height:340px;border:0;filter:grayscale(15%);}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .contact-item{display:flex;gap:20px;align-items:flex-start;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .contact-item:last-child{border-bottom:none;}
+  .contact-icon{flex-shrink:0;}
+  .contact-item h4{font-family:"Cormorant Garamond",serif;font-size:18px;margin-bottom:6px;}
+  .contact-item p{font-size:13px;opacity:0.55;line-height:1.7;}
+  .contact-textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--light);padding:14px 16px;font-family:"Montserrat",sans-serif;font-size:13px;font-weight:300;resize:vertical;min-height:120px;outline:none;transition:border 0.3s;width:100%;}
+  .contact-textarea:focus{border-color:var(--gold);}
+  .phone-link{color:inherit;text-decoration:none;transition:color 0.2s;}
+  .phone-link:hover{color:var(--gold);}
+
+  /* WHATSAPP DIRECT BUTTON */
+  .wa-direct-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:12px 24px;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;margin-top:12px;transition:all 0.3s;}
+  .wa-direct-btn:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,211,102,0.4);}
+
+  /* FLOATING WHATSAPP */
+  .wa-float{position:fixed;bottom:24px;right:24px;z-index:99998;display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;animation:waPop 0.6s ease 1.5s both;}
+  @keyframes waPop{from{opacity:0;transform:scale(0.4);}to{opacity:1;transform:scale(1);}}
+  .wa-float-btn{width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);transition:transform 0.3s,box-shadow 0.3s;flex-shrink:0;}
+  .wa-float-btn:hover{transform:scale(1.1);}
+  .wa-float-label{background:#25D366;color:#fff;font-family:"Montserrat",sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border-radius:3px;box-shadow:0 4px 16px rgba(37,211,102,0.3);white-space:nowrap;opacity:0;transform:translateX(8px);transition:opacity 0.3s,transform 0.3s;pointer-events:none;}
+  .wa-float:hover .wa-float-label{opacity:1;transform:translateX(0);}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--dark2);border:1px solid rgba(201,168,76,0.25);width:90%;max-width:560px;max-height:90vh;overflow-y:auto;padding:50px;position:relative;animation:modalIn 0.35s ease;}
+  @keyframes modalIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .modal-close{position:absolute;top:20px;right:24px;background:none;border:none;color:var(--gray);font-size:26px;cursor:pointer;transition:color 0.2s;line-height:1;}
+  .modal-close:hover{color:var(--gold);}
+  .modal h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:400;margin-bottom:6px;}
+  .modal-car{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;}
+  .modal-form{display:flex;flex-direction:column;gap:20px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .modal-form .form-group input,.modal-form .form-group select{width:100%;}
+  .price-summary{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:22px;}
+  .price-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:10px;opacity:0.7;}
+  .price-row.total{border-top:1px solid rgba(201,168,76,0.2);padding-top:12px;margin-top:4px;font-size:15px;opacity:1;font-weight:500;}
+  .price-row.total span:last-child{color:var(--gold);font-family:"Cormorant Garamond",serif;font-size:22px;}
+  .modal-submit{background:var(--gold);color:var(--black);border:none;padding:18px;font-family:"Montserrat",sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all 0.3s;width:100%;}
+  .modal-submit:hover{background:var(--gold-light);}
+
+  /* SUCCESS */
+  .success-modal{display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px;}
+  .success-modal.active{display:flex;}
+  .success-icon{width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 28px;}
+  .success-modal h2{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:300;margin-bottom:12px;color:#fff;}
+  .success-modal p{opacity:0.6;font-size:14px;line-height:1.8;max-width:420px;color:#fff;}
+  .success-wa-note{margin-top:12px;font-size:12px;color:#25D366;opacity:0.9;}
+  .success-modal .btn-gold{margin-top:36px;}
+
+  /* FOOTER */
+  footer{background:#040404;border-top:1px solid rgba(201,168,76,0.12);padding:50px 60px 30px;}
+  .footer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .footer-logo{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;color:var(--gold);}
+  .footer-logo span{color:rgba(255,255,255,0.4);font-weight:300;}
+  .footer-links{display:flex;gap:36px;}
+  .footer-links a{color:rgba(241,241,241,0.4);text-decoration:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;opacity:0.3;color:#fff;}
+
+
+  /* BRAND TAGLINE */
+  .hero-tagline{display:flex;align-items:center;gap:0;margin-bottom:30px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.32s;}
+  .hero-tagline-line{flex:0 0 50px;height:1px;opacity:0.5;}
+  .hero-tagline-line.left{background:linear-gradient(90deg,transparent,var(--gold));}
+  .hero-tagline-line.right{background:linear-gradient(90deg,var(--gold),transparent);}
+  .hero-tagline-inner{display:flex;align-items:center;gap:16px;padding:0 22px;}
+  .hero-tagline-word{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.4vw,28px);font-weight:600;letter-spacing:5px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dark) 0%,var(--gold-light) 50%,var(--gold-dark) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:goldShine 3s linear infinite;}
+  .hero-tagline-sep{color:var(--gold);opacity:0.7;font-size:20px;font-family:"Cormorant Garamond",serif;-webkit-text-fill-color:var(--gold);}
+  @keyframes goldShine{0%{background-position:0% center;}100%{background-position:200% center;}}
+  body.light .hero-tagline-line{opacity:0.35;}
+  @media(max-width:900px){.hero-tagline-word{font-size:clamp(14px,3.5vw,20px);letter-spacing:3px;}.hero-tagline-line{flex:0 0 28px;}.hero-tagline-inner{gap:12px;padding:0 14px;}}
+  @media(max-width:480px){.hero-tagline-word{font-size:13px;letter-spacing:2px;}.hero-tagline-line{flex:0 0 16px;}.hero-tagline-inner{gap:10px;padding:0 10px;}}
+
+
+  /* BRAND TAGLINE — Glorious version */
+  .hero-tagline{display:flex;align-items:center;gap:0;margin-bottom:32px;animation:fadeInUp 0.8s ease forwards;opacity:0;animation-delay:0.32s;}
+  .hero-tagline-line{flex:0 0 40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));opacity:0.6;}
+  .hero-tagline-line.right{background:linear-gradient(90deg,var(--gold),transparent);}
+  .hero-tagline-inner{display:flex;align-items:center;gap:14px;padding:0 20px;}
+  .hero-tagline-word{font-family:"Cormorant Garamond",serif;font-size:clamp(17px,2.2vw,26px);font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:0.92;}
+  .hero-tagline-sep{color:var(--gold);opacity:0.5;font-size:18px;font-weight:300;}
+  body.light .hero-tagline-line{opacity:0.4;}
+  @media(max-width:900px){.hero-tagline-word{font-size:15px;letter-spacing:3px;}.hero-tagline-line{flex:0 0 24px;}}
+  @media(max-width:480px){.hero-tagline-word{font-size:13px;letter-spacing:2px;}.hero-tagline-line{flex:0 0 16px;}}
+
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+  /* TABLET */
+  @media(max-width:900px){
+    #topbar{padding:12px 18px;}
+    #topbar .nav-links{display:none;}
+    #topbar .logo{font-size:18px;letter-spacing:2px;}
+    .hero{padding:100px 22px 60px;min-height:100vh;}
+    .hero::before{font-size:65px;letter-spacing:3px;}
+    .hero h1{font-size:clamp(36px,9vw,60px);margin-bottom:18px;}
+    .hero p{font-size:13px;margin-bottom:32px;max-width:100%;}
+    .btn-gold,.btn-outline{padding:12px 22px;font-size:10px;letter-spacing:1.5px;}
+    .hero-stats{position:static;margin-top:36px;gap:28px;}
+    .stat-num{font-size:34px;}
+    .search-section{padding:28px 22px;}
+    .search-form{grid-template-columns:1fr 1fr;gap:12px;}
+    .search-form .btn-gold{grid-column:1/-1;padding:13px;}
+    section{padding:64px 22px;}
+    .section-header{margin-bottom:40px;}
+    .cars-grid{grid-template-columns:1fr;gap:14px;}
+    .why-grid{grid-template-columns:1fr 1fr;gap:22px;margin-top:40px;}
+    .reviews-section{padding:64px 22px;}
+    .reviews-grid{grid-template-columns:1fr 1fr;gap:14px;margin-top:40px;}
+    .contact-grid{grid-template-columns:1fr;gap:40px;}
+    .map-wrap iframe{height:260px;}
+    footer{padding:36px 22px 20px;}
+    .footer-top{flex-direction:column;gap:20px;text-align:center;}
+    .footer-links{flex-wrap:wrap;justify-content:center;gap:20px;}
+    .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+    .modal{padding:28px 20px;}
+    .form-row{grid-template-columns:1fr;}
+    .btn-booknow{padding:8px 14px;font-size:9px;letter-spacing:1.5px;}
+    .wa-float{bottom:16px;right:16px;}
+  }
+  @media(max-width:480px){
+    #topbar .logo{font-size:16px;letter-spacing:1.5px;}
+    .btn-booknow{display:none;}
+    .hero{padding:86px 18px 50px;}
+    .hero h1{font-size:clamp(30px,10vw,44px);}
+    .hero-btns{flex-direction:column;align-items:stretch;gap:10px;}
+    .btn-gold,.btn-outline{text-align:center;padding:13px 20px;}
+    .hero-stats{gap:18px;}
+    .stat-num{font-size:28px;}
+    .search-form{grid-template-columns:1fr;}
+    .why-grid{grid-template-columns:1fr 1fr;gap:16px;}
+    .reviews-grid{grid-template-columns:1fr;}
+    .map-wrap iframe{height:220px;}
+    .footer-bottom span:last-child{display:none;}
+    .wa-float-label{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div id="topbar">
+  <a class="logo" href="#home">MENGOUCI<span> CARS</span></a>
+  <ul class="nav-links">
+    <li><a href="#home" data-en="Home" data-fr="Accueil">Home</a></li>
+    <li><a href="#fleet" data-en="Fleet" data-fr="Flotte">Fleet</a></li>
+    <li><a href="#why" data-en="About" data-fr="&Agrave; Propos">About</a></li>
+    <li><a href="#contact" data-en="Contact" data-fr="Contact">Contact</a></li>
+  </ul>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9728;&#65039;</button>
+    <button class="lang-toggle" onclick="toggleLang()">FR</button>
+    <button class="btn-booknow" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})" data-en="Book Now" data-fr="R&eacute;server">Book Now</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-badge" data-en="Premium Car Rental &mdash; Morocco" data-fr="Location de Voitures Premium &mdash; Maroc">Premium Car Rental &mdash; Morocco</div>
+  <div class="hero-tagline">
+    <span class="hero-tagline-line left"></span>
+    <div class="hero-tagline-inner">
+      <span class="hero-tagline-word">Pas de Caution</span>
+      <span class="hero-tagline-sep">&diams;</span>
+      <span class="hero-tagline-word">Pas de Stress</span>
+    </div>
+    <span class="hero-tagline-line right"></span>
+  </div>
+  </div>
+  <h1 data-en="Drive in &lt;em&gt;Style,&lt;/em&gt;&lt;br&gt;Arrive in Luxury" data-fr="Conduisez avec &lt;em&gt;Style,&lt;/em&gt;&lt;br&gt;Arrivez en Luxe">Drive in <em>Style,</em><br>Arrive in Luxury</h1>
+  <p data-en="Discover our exclusive fleet of premium vehicles. From sporty compacts to executive SUVs &mdash; the perfect car for every journey across Morocco." data-fr="D&eacute;couvrez notre flotte exclusive de v&eacute;hicules premium. Des compactes sportives aux SUV ex&eacute;cutifs &mdash; la voiture parfaite pour chaque trajet au Maroc.">Discover our exclusive fleet of premium vehicles. From sporty compacts to executive SUVs &mdash; the perfect car for every journey across Morocco.</p>
+  <div class="hero-btns">
+    <a class="btn-gold" href="#fleet" data-en="Explore Fleet" data-fr="Voir la Flotte">Explore Fleet</a>
+    <a class="btn-outline" href="#contact" data-en="Contact Us" data-fr="Contactez-Nous">Contact Us</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">30+</div><div class="stat-label" data-en="Vehicles" data-fr="V&eacute;hicules">Vehicles</div></div>
+    <div class="stat"><div class="stat-num">5&#9733;</div><div class="stat-label" data-en="Rated Service" data-fr="Service Not&eacute;">Rated Service</div></div>
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label" data-en="Years Experience" data-fr="Ans d'Exp&eacute;rience">Years Experience</div></div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-title" data-en="&#11041; Find Your Perfect Car" data-fr="&#11041; Trouvez Votre Voiture Id&eacute;ale">&#11041; Find Your Perfect Car</div>
+  <div class="search-form">
+    <div class="form-group"><label data-en="Pickup Location" data-fr="Lieu de Prise en Charge">Pickup Location</label><input type="text" placeholder="Casablanca, Rabat, Marrakech&hellip;"/></div>
+    <div class="form-group"><label data-en="Pickup Date" data-fr="Date de Prise en Charge">Pickup Date</label><input type="date"/></div>
+    <div class="form-group"><label data-en="Return Date" data-fr="Date de Retour">Return Date</label><input type="date"/></div>
+    <div class="form-group">
+      <label data-en="Car Category" data-fr="Cat&eacute;gorie">Car Category</label>
+      <select onchange="filterCars(this.value)">
+        <option value="all" data-en="All Categories" data-fr="Toutes Cat&eacute;gories">All Categories</option>
+        <option value="Economy" data-en="Economy" data-fr="&Eacute;conomique">Economy</option>
+        <option value="Sport">Sport</option>
+        <option value="SUV &amp; 4x4">SUV &amp; 4x4</option>
+        <option value="Luxury" data-en="Luxury" data-fr="Luxe">Luxury</option>
+        <option value="Van">Van</option>
+      </select>
+    </div>
+    <button class="btn-gold" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})" data-en="Search" data-fr="Rechercher">Search</button>
+  </div>
+</div>
+
+<!-- FLEET -->
+<section id="fleet" style="background:var(--black);">
+  <div class="section-header">
+    <span class="section-tag" data-en="&#11041; Our Fleet" data-fr="&#11041; Notre Flotte">&#11041; Our Fleet</span>
+    <h2 class="section-title" data-en="Curated &lt;em&gt;Vehicles&lt;/em&gt;&lt;br&gt;For Every Journey" data-fr="V&eacute;hicules &lt;em&gt;S&eacute;lectionn&eacute;s&lt;/em&gt;&lt;br&gt;Pour Chaque Trajet">Curated <em>Vehicles</em><br>For Every Journey</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterCars('all')" data-en="All" data-fr="Tous">All</button>
+    <button class="filter-tab" onclick="filterCars('Economy')" data-en="Economy" data-fr="&Eacute;conomique">Economy</button>
+    <button class="filter-tab" onclick="filterCars('Sport')">Sport</button>
+    <button class="filter-tab" onclick="filterCars('SUV &amp; 4x4')">SUV &amp; 4x4</button>
+    <button class="filter-tab" onclick="filterCars('Luxury')" data-en="Luxury" data-fr="Luxe">Luxury</button>
+    <button class="filter-tab" onclick="filterCars('Van')">Van</button>
+  </div>
+  <div class="cars-grid" id="carsGrid"></div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="why">
+  <div class="section-header" style="text-align:center;">
+    <span class="section-tag" data-en="Why Mengouchi Cars" data-fr="Pourquoi Mengouchi Cars">Why Mengouchi Cars</span>
+    <h2 class="section-title" data-en="A Class Above&lt;br&gt;&lt;em&gt;The Rest&lt;/em&gt;" data-fr="Une Classe Au-Dessus&lt;br&gt;&lt;em&gt;Des Autres&lt;/em&gt;">A Class Above<br><em>The Rest</em></h2>
+    <div class="section-line" style="margin:20px auto 0;"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#C9A84C"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg></div>
+      <h3 data-en="Easy Booking" data-fr="R&eacute;servation Facile">Easy Booking</h3>
+      <p data-en="Reserve your car in minutes. No hidden fees, ever." data-fr="R&eacute;servez votre voiture en quelques minutes. Aucun frais cach&eacute;, jamais.">Reserve your car in minutes. No hidden fees, ever.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08A7.232 7.232 0 0112 19z"/></svg></div>
+      <h3 data-en="Full Insurance" data-fr="Assurance Compl&egrave;te">Full Insurance</h3>
+      <p data-en="All vehicles come with comprehensive insurance coverage." data-fr="Tous nos v&eacute;hicules sont couverts par une assurance compl&egrave;te.">All vehicles come with comprehensive insurance coverage.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#C9A84C"><path d="M17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99C18.72 5.42 18.16 5 17.5 5zm-11 9c-.83 0-1.5-.67-1.5-1.5S5.67 11 6.5 11s1.5.67 1.5 1.5S7.33 14 6.5 14zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 9l1.5-4.5h11L19 9H5z"/></svg></div>
+      <h3 data-en="Delivery Service" data-fr="Service de Livraison">Delivery Service</h3>
+      <p data-en="We deliver your car to your hotel, airport, or any location." data-fr="Nous livrons votre voiture &agrave; votre h&ocirc;tel, a&eacute;roport ou tout endroit.">We deliver your car to your hotel, airport, or any location.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.1.9 2 2 2h1c1.1 0 2-.9 2-2v-3c0-1.1-.9-2-2-2H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-1c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h1c1.1 0 2-.9 2-2v-7c0-4.97-4.03-9-9-9z"/></svg></div>
+      <h3 data-en="24/7 Support" data-fr="Support 24h/24">24/7 Support</h3>
+      <p data-en="Our team is available around the clock to assist you." data-fr="Notre &eacute;quipe est disponible 24h/24 et 7j/7 pour vous aider.">Our team is available around the clock to assist you.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <h3 data-en="150K+ Community" data-fr="Communaut&eacute; 150K+">150K+ Community</h3>
+      <p data-en="Over 150,000 followers trust us on Instagram." data-fr="Plus de 150 000 abonn&eacute;s nous font confiance sur Instagram.">Over 150,000 followers trust us on Instagram.</p>
+      <a href="https://www.instagram.com/pas_de_caution1/" target="_blank" style="display:inline-block;margin-top:14px;font-size:10px;letter-spacing:2px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:3px;">@pas_de_caution1</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section" id="reviews">
+  <div class="section-header" style="text-align:center;">
+    <span class="section-tag" data-en="&#11041; Reviews" data-fr="&#11041; Avis">&#11041; Reviews</span>
+    <h2 class="section-title" data-en="What Our &lt;em&gt;Clients&lt;/em&gt; Say" data-fr="Ce Que Disent&lt;br&gt;&lt;em&gt;Nos Clients&lt;/em&gt;">What Our <em>Clients</em> Say</h2>
+    <div class="section-line" style="margin:20px auto 0;"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div>
+      <p class="review-text" data-en="&ldquo;Best agency in Morocco, I recommend it&rdquo;" data-fr="&ldquo;Meilleure agence au Maroc, je vous recommande&rdquo;">&ldquo;Best agency in Morocco, I recommend it&rdquo;</p>
+      <div class="review-divider"></div>
+      <div class="reviewer-info"><div class="reviewer-avatar">M</div><div><div class="reviewer-name">Mohamed</div><div class="reviewer-meta">1 month ago</div><div class="google-badge"><span class="google-g"></span></div></div></div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div>
+      <p class="review-text" data-en="&ldquo;Good service without deposit, without check. Good luck to you!&rdquo;" data-fr="&ldquo;Bon service sans caution, sans ch&egrave;que. Bon courage &agrave; vous !&rdquo;">&ldquo;Good service without deposit, without check. Good luck to you!&rdquo;</p>
+      <div class="review-divider"></div>
+      <div class="reviewer-info"><div class="reviewer-avatar">O</div><div><div class="reviewer-name">Oussama</div><div class="reviewer-meta">6 months ago</div><div class="google-badge"><span class="google-g"></span></div></div></div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div>
+      <p class="review-text" data-en="&ldquo;i Booked with Mr. Salah Eddine at Oujda airport. Incredibly responsive and excellent! Prices are reasonable. May God bless their business.&rdquo;" data-fr="&ldquo;J ai R&eacute;serv&eacute; avec M. Salah Eddine &agrave; l'a&eacute;roport d'Oujda. Tr&egrave;s r&eacute;actif et excellent ! Prix raisonnables. Que Dieu b&eacute;nisse leur entreprise.&rdquo;">&ldquo;I Booked with Mr. Salah Eddine at Oujda airport. Incredibly responsive and excellent! Prices are reasonable. May God bless their business.&rdquo;</p>
+      <div class="review-divider"></div>
+      <div class="reviewer-info"><div class="reviewer-avatar">M</div><div><div class="reviewer-name">Mehdi</div><div class="reviewer-meta">10 months ago</div><div class="google-badge"><span class="google-g"></span></div></div></div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div>
+      <p class="review-text" data-en="&ldquo;Top service and brand new cars with on-time airport service at good prices, I recommend you!&rdquo;" data-fr="&ldquo;Service top et voitures toutes neuves avec un service a&eacute;roport &agrave; l'heure et &agrave; bons prix, je vous recommande !&rdquo;">&ldquo;Top service and brand new cars with on-time airport service at good prices, I recommend you!&rdquo;</p>
+      <div class="review-divider"></div>
+      <div class="reviewer-info"><div class="reviewer-avatar">N</div><div><div class="reviewer-name">Nadia</div><div class="reviewer-meta">12 months ago</div><div class="google-badge"><span class="google-g"></span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--black);">
+  <div class="section-header">
+    <span class="section-tag" data-en="&#11041; Get In Touch" data-fr="&#11041; Contactez-Nous">&#11041; Get In Touch</span>
+    <h2 class="section-title" data-en="We're Here&lt;br&gt;To &lt;em&gt;Help You&lt;/em&gt;" data-fr="Nous Sommes L&agrave;&lt;br&gt;Pour &lt;em&gt;Vous Aider&lt;/em&gt;">We&rsquo;re Here<br>To <em>Help You</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-item">
+         <div class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+        <div><h4>Instagram</h4><p><a href="https://www.instagram.com/pas_de_caution1/" target="_blank" style="color:#C9A84C;text-decoration:none;">@pas_de_caution1</a><br><span data-en="Follow us for latest cars &amp; offers" data-fr="Suivez-nous pour les derni&egrave;res offres">Follow us for latest cars &amp; offers</span></p></div>
+      </div>
+      <div class="contact-item">
+         <div class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+        <div>
+          <h4>WhatsApp</h4>
+          <p><a class="phone-link" href="tel:+212701171805">+212 701171805</a><br><span data-en="Quick replies guaranteed" data-fr="R&eacute;ponses rapides garanties">Quick replies guaranteed</span></p>
+          <a class="wa-direct-btn" href="https://wa.me/212701171805" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-en="Message on WhatsApp" data-fr="&Eacute;crire sur WhatsApp">Message on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+      <div class="contact-item">
+       <div class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#C9A84C"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+        <div><h4 data-en="Call Us" data-fr="Appelez-Nous">Call Us</h4><p><a class="phone-link" href="tel:+212701171805">+212 701171805</a><br><span data-en="Available 7 days a week" data-fr="Disponible 7 jours sur 7">Available 7 days a week</span></p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg></div>
+        <div><h4 data-en="Our Location" data-fr="Notre Adresse">Our Location</h4><p>37 rue Tlemceen ville 60050, Ahfir</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="form-group" style="margin-bottom:16px"><label data-en="Your Name" data-fr="Votre Nom">Your Name</label><input type="text" placeholder="Mohammed Al-Rashid" style="width:100%"/></div>
+      <div class="form-group" style="margin-bottom:16px"><label data-en="Phone / Email" data-fr="T&eacute;l&eacute;phone / Email">Phone / Email</label><input type="text" placeholder="+212 6&hellip; or email@example.com" style="width:100%"/></div>
+      <div class="form-group" style="margin-bottom:16px"><label data-en="Message" data-fr="Message">Message</label><textarea class="contact-textarea" placeholder="Tell us about your rental needs&hellip;"></textarea></div>
+      <button class="btn-gold" style="width:100%" onclick="sendContactMessage()" data-en="Send Message" data-fr="Envoyer le Message">Send Message</button>
+    </div>
+  </div>
+  <div class="map-wrap">
+    <div class="map-label">
+      <svg width="10" height="14" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>
+      <span data-en="Find Us &mdash; Mengouchi Car, Ahfir" data-fr="Nous Trouver &mdash; Mengouchi Car, Ahfir">Find Us &mdash; Mengouchi Car, Ahfir</span>
+    </div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3270.1177062461297!2d-2.1009089!3d34.953658399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7847086b00d9d3%3A0xdfd3bc76141ed95c!2sMengouchi%20Car%20Location%20de%20voitures!5e0!3m2!1sen!2sma!4v1772723246696!5m2!1sen!2sma" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">MENGOUCHI<span> CARS</span></div>
+    <div class="footer-links">
+      <a href="#home" data-en="Home" data-fr="Accueil">Home</a>
+      <a href="#fleet" data-en="Fleet" data-fr="Flotte">Fleet</a>
+      <a href="#why" data-en="About" data-fr="&Agrave; Propos">About</a>
+      <a href="#contact" data-en="Contact" data-fr="Contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-en="&copy; 2025 Mengouchi Cars. All rights reserved." data-fr="&copy; 2025 Mengouchi Cars. Tous droits r&eacute;serv&eacute;s.">&copy; 2025 Mengouchi Cars. All rights reserved.</span>
+    <span data-en="Premium Car Rental &mdash; Morocco" data-fr="Location Premium &mdash; Maroc">Premium Car Rental &mdash; Morocco</span>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a class="wa-float" href="https://wa.me/212701171805" target="_blank" rel="noopener">
+  <span class="wa-float-label" data-en="Chat on WhatsApp" data-fr="WhatsApp">Chat on WhatsApp</span>
+  <div class="wa-float-btn">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </div>
+</a>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2 data-en="Reserve Your Car" data-fr="R&eacute;servez Votre Voiture">Reserve Your Car</h2>
+    <div class="modal-car" id="modalCarName">&mdash; Select a vehicle &mdash;</div>
+    <div class="modal-form">
+      <div class="form-row">
+        <div class="form-group"><label data-en="First Name" data-fr="Pr&eacute;nom">First Name</label><input type="text" id="mFirstName" placeholder="Mohammed"/></div>
+        <div class="form-group"><label data-en="Last Name" data-fr="Nom">Last Name</label><input type="text" id="mLastName" placeholder="Alaoui"/></div>
+      </div>
+      <div class="form-group"><label data-en="Phone Number" data-fr="Num&eacute;ro de T&eacute;l&eacute;phone">Phone Number</label><input type="tel" id="mPhone" placeholder="+212 6XX XXX XXX"/></div>
+      <div class="form-group"><label data-en="Email (optional)" data-fr="Email (optionnel)">Email (optional)</label><input type="email" id="mEmail" placeholder="you@example.com"/></div>
+      <div class="form-row">
+        <div class="form-group"><label data-en="Pickup Date" data-fr="Date de Prise en Charge">Pickup Date</label><input type="date" id="mPickup" onchange="calcPrice()"/></div>
+        <div class="form-group"><label data-en="Return Date" data-fr="Date de Retour">Return Date</label><input type="date" id="mReturn" onchange="calcPrice()"/></div>
+      </div>
+      <div class="form-group">
+        <label data-en="Pickup Location" data-fr="Lieu de Prise en Charge">Pickup Location</label>
+        <select id="mLocation">
+          <option>Nador El Aroui &mdash; Airport</option>
+          <option>Oujda &mdash; Airport</option>
+          <option>Casablanca &mdash; Airport</option>
+          <option>Casablanca &mdash; City Center</option>
+          <option>Rabat &mdash; City Center</option>
+          <option>Marrakech &mdash; Airport</option>
+          <option>Agadir &mdash; Airport</option>
+          <option data-en="Delivery to my hotel" data-fr="Livraison &agrave; mon h&ocirc;tel">Delivery to my hotel</option>
+        </select>
+      </div>
+      <div class="price-summary">
+        <div class="price-row"><span data-en="Daily rate" data-fr="Tarif journalier">Daily rate</span><span id="summaryRate">&mdash;</span></div>
+        <div class="price-row"><span data-en="Number of days" data-fr="Nombre de jours">Number of days</span><span id="summaryDays">&mdash;</span></div>
+        <div class="price-row"><span data-en="Insurance" data-fr="Assurance">Insurance</span><span data-en="Included" data-fr="Incluse">Included</span></div>
+        <div class="price-row total"><span data-en="Total Estimate" data-fr="Estimation Totale">Total Estimate</span><span id="summaryTotal">&mdash;</span></div>
+      </div>
+      <button class="modal-submit" onclick="submitBooking()" data-en="Confirm &amp; Send to WhatsApp" data-fr="Confirmer &amp; Envoyer sur WhatsApp">Confirm &amp; Send to WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-modal" id="successModal">
+  <div class="success-icon">&#10003;</div>
+  <h2 data-en="Booking Sent!" data-fr="R&eacute;servation Envoy&eacute;e!">Booking Sent!</h2>
+  <p data-en="Your booking details have been sent to WhatsApp. We will confirm your reservation within 1 hour." data-fr="Vos d&eacute;tails ont &eacute;t&eacute; envoy&eacute;s sur WhatsApp. Nous confirmerons votre r&eacute;servation dans l'heure.">Your booking details have been sent to WhatsApp. We will confirm your reservation within 1 hour.</p>
+  <p class="success-wa-note" data-en="&#128242; WhatsApp is opening with your booking details pre-filled." data-fr="&#128242; WhatsApp s'ouvre avec vos d&eacute;tails pr&eacute;remplis.">&#128242; WhatsApp is opening with your booking details pre-filled.</p>
+  <button class="btn-gold" onclick="document.getElementById('successModal').classList.remove('active')" data-en="Back to Site" data-fr="Retour au Site">Back to Site</button>
+</div>
+
+<script>
+const cars=[
+  {id:1,img:"DACIA LOGAN.png",name:"Dacia Logan",model:"2025 \u2014 Full Option",category:"Economy",price:250,avail:true,seats:5,trans:"Manual",fuel:"Diesel"},
+  {id:2,img:"DACIA SANDERO.png",name:"Dacia Sandero",model:"2025 \u2014 City Hatchback",category:"Economy",price:270,avail:true,seats:5,trans:"Manual",fuel:"Diesel"},
+  {id:3,img:"DACIA STEPWAY.png",name:"Dacia Stepway",model:"2025 \u2014 Boite Auto",category:"Economy",price:320,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:4,img:"RENAULT CLIO 5.png",name:"Renault Clio 5",model:"2024 \u2014 Compact Hatchback",category:"Economy",price:350,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:5,img:"Peugeot 208 style.png",name:"Peugeot 208 Style",model:"2024 \u2014 City Car",category:"Economy",price:330,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:6,img:"PEUGEOT 208 GT.png",name:"Peugeot 208 GT",model:"2024 \u2014 Sport Edition",category:"Economy",price:380,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:7,img:"fiat 500.png",name:"Fiat 500 Auto",model:"2024 \u2014 Boite Auto",category:"Economy",price:300,avail:true,seats:4,trans:"Auto",fuel:"Petrol"},
+  {id:8,img:"FIAT 500 CABRIOLET.png",name:"Fiat 500 Cabriolet",model:"2024 \u2014 Cabriolet",category:"Economy",price:280,avail:true,seats:4,trans:"Manual",fuel:"Petrol"},
+  {id:9,img:"FIAT 600.png",name:"Fiat 600",model:"2025 \u2014 Compact Crossover",category:"Economy",price:360,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:10,img:"OPEL CORSA GS LINE 2025.png",name:"Opel Corsa GS Line",model:"2025 \u2014 Sport Hatchback",category:"Economy",price:370,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:11,img:"Opel CORSA 2026.png",name:"Opel Corsa",model:"2026 \u2014 New Generation",category:"Economy",price:350,avail:true,seats:5,trans:"Manual",fuel:"Petrol"},
+  {id:12,img:"RENAULT CLIO 5 ALPHINE.png",name:"Renault Clio 5 Alpine",model:"2025\u20132026 \u2014 Alpine Edition",category:"Sport",price:550,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:13,img:"Golf 8 GTI Club sport.png",name:"Golf 8 GTI Club Sport",model:"2024 \u2014 Hot Hatch",category:"Sport",price:900,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:14,img:"GOLF 8 R STAGE 2.png",name:"Golf 8 R",model:"2024 \u2014 Performance AWD",category:"Sport",price:1100,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:15,img:"Cupra Formentor 2026.png",name:"Cupra Formentor",model:"2026 \u2014 Sport SUV",category:"Sport",price:950,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:16,img:"CUPRA LEON VZ.png",name:"Cupra Leon VZ",model:"2025 \u2014 Performance",category:"Sport",price:900,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:17,img:"seat leon fr 2025.png",name:"Seat Leon FR",model:"2025 \u2014 Sport Edition",category:"Sport",price:700,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:18,img:"RS3 PERFORMANCE.png",name:"RS3 Performance",model:"2025 \u2014 400 HP",category:"Sport",price:1500,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:19,img:"RS3 PACK ABT.png",name:"RS3 Pack ABT",model:"2025 \u2014 ABT Tuned",category:"Sport",price:1800,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:20,img:"RS3.png",name:"RS3",model:"2025 \u2014 Standard",category:"Sport",price:1400,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:21,img:"MERCEDES C63.png",name:"Mercedes C63 AMG",model:"2024 \u2014 AMG Performance",category:"Sport",price:2200,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:22,img:"Opel moka.png",name:"Opel Moka Auto",model:"2024 \u2014 Boite Auto",category:"SUV & 4x4",price:480,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:23,img:"opel moka man.png",name:"Opel Moka",model:"2024 \u2014 Boite Manuelle",category:"SUV & 4x4",price:420,avail:true,seats:5,trans:"Manual",fuel:"Petrol"},
+  {id:24,img:"hyundai tucson.png",name:"Hyundai Tucson",model:"2024 \u2014 Crossover SUV",category:"SUV & 4x4",price:550,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:25,img:"T-roc 2026.png",name:"T-Roc",model:"2026 \u2014 Sport Crossover",category:"SUV & 4x4",price:600,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:26,img:"RANGE ROVER SPORT 2025.png",name:"Range Rover Sport",model:"2025 \u2014 Luxury 4x4",category:"SUV & 4x4",price:2500,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:27,img:"OPEL ASTRA 2026.png",name:"Opel Astra",model:"2024 \u2014 Compact Crossover",category:"Sport",price:500,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:28,img:"Mercedes classe a.png",name:"Mercedes Classe A",model:"2024 \u2014 Premium Sedan",category:"Luxury",price:1200,avail:true,seats:5,trans:"Auto",fuel:"Petrol"},
+  {id:29,img:"MERCEDES CLASSE G.png",name:"Mercedes Classe G",model:"2024 \u2014 G-Wagon",category:"Luxury",price:3500,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:30,img:"MERCEDES CLASS G BRABUS.png",name:"Mercedes Classe G Brabus",model:"2024 \u2014 Brabus Edition",category:"Luxury",price:5000,avail:true,seats:5,trans:"Auto",fuel:"Diesel"},
+  {id:31,img:"MERCEDESS CLASS VANNE.png",name:"Mercedes Vanne",model:"2024 \u2014 Premium Van",category:"Van",price:1800,avail:true,seats:8,trans:"Auto",fuel:"Diesel"},
+];
+
+let isDark=true;
+function toggleTheme(){isDark=!isDark;document.body.classList.toggle("light",!isDark);document.querySelector(".theme-toggle").innerHTML=isDark?"&#9728;&#65039;":"&#127769;";localStorage.setItem("theme",isDark?"dark":"light");}
+
+let isEN=true;
+function toggleLang(){isEN=!isEN;document.querySelector(".lang-toggle").textContent=isEN?"FR":"EN";document.querySelectorAll("[data-en]").forEach(function(el){var text=isEN?el.getAttribute("data-en"):el.getAttribute("data-fr");if(!text)return;if(el.tagName==="INPUT"||el.tagName==="TEXTAREA"){el.placeholder=text;}else{el.innerHTML=text;}});var activeCat=document.querySelector(".filter-tab.active");if(activeCat){var cat=activeCat.getAttribute("data-en")||activeCat.textContent.trim();renderCars(cat==="All"||cat==="Tous"?cars:cars.filter(function(c){return c.category===cat;}));}localStorage.setItem("lang",isEN?"en":"fr");}
+
+
+function sendContactMessage(){
+  var name=document.querySelector('#contact input[placeholder="Mohammed Al-Rashid"]').value.trim();
+  var contact=document.querySelector('#contact input[placeholder="+212 6\u2026 or email@example.com"]').value.trim();
+  var msg=document.querySelector('#contact .contact-textarea').value.trim();
+  if(!name||!contact){
+    alert(isEN?"Please enter your name and phone/email.":"Veuillez entrer votre nom et t\u00e9l\u00e9phone/email.");
+    return;
+  }
+  var waMsg;
+  if(isEN){
+    waMsg="*New Message \u2014 Mengouchi Cars Website*\n\n"
+      +"*Name:* "+name+"\n"
+      +"*Contact:* "+contact+"\n"
+      +(msg?"*Message:* "+msg+"\n":"")
+      +"\n_Sent from the Contact form_";
+  } else {
+    waMsg="*Nouveau Message \u2014 Site Mengouchi Cars*\n\n"
+      +"*Nom:* "+name+"\n"
+      +"*Contact:* "+contact+"\n"
+      +(msg?"*Message:* "+msg+"\n":"")
+      +"\n_Envoy\u00e9 depuis le formulaire de contact_";
+  }
+  window.open("https://wa.me/212701171805?text="+encodeURIComponent(waMsg),"_blank");
+}
+
+function renderCars(list){
+  var bookTxt=isEN?"Book Now":"R\u00e9server";
+  var availTxt=isEN?"\u2714 Available":"\u2714 Disponible";
+  var unavailTxt=isEN?"\u2716 Unavailable":"\u2716 Indisponible";
+  var fromTxt=isEN?"From / day":"\u00c0 partir de / jour";
+  var html="";
+  var src=list||cars;
+  for(var i=0;i<src.length;i++){
+    var car=src[i];
+    var cardClass="car-card"+(car.avail?"":" unavailable");
+    var clickAttr=car.avail?"openModal("+car.id+")":"";
+    var availClass=car.avail?"avail-yes":"avail-no";
+    var availLabel=car.avail?availTxt:unavailTxt;
+    var btnDisabled=car.avail?"":" disabled";
+    var btnClick=car.avail?"openModal("+car.id+")":"";
+    var btnLabel=car.avail?bookTxt:unavailTxt;
+    html+='<div class="'+cardClass+'" onclick="'+clickAttr+'">';
+    html+='<div class="car-img-wrap">';
+    html+='<img src="car-images/'+car.img+'" style="width:100%;height:220px;object-fit:cover;">';
+    html+='<div class="car-badge">'+car.category+'</div>';
+    html+='<div class="car-avail '+availClass+'">'+availLabel+'</div>';
+    html+='</div>';
+    html+='<div class="car-info">';
+    html+='<div class="car-name">'+car.name+'</div>';
+    html+='<div class="car-model">'+car.model+'</div>';
+    html+='<div class="car-specs">';
+    html+='<div class="spec"><span class="spec-icon">&#128101;</span>'+car.seats+' '+(isEN?"Seats":"Places")+'</div>';
+    html+='<div class="spec"><span class="spec-icon">&#9881;</span>'+car.trans+'</div>';
+    html+='<div class="spec"><span class="spec-icon">&#9981;</span>'+car.fuel+'</div>';
+    html+='</div>';
+    html+='<div class="car-footer">';
+    html+='<div><div class="car-price-label">'+fromTxt+'</div><div class="car-price">'+car.price+' <span>MAD</span></div></div>';
+    html+='<button class="book-btn"'+btnDisabled+' onclick="event.stopPropagation();'+btnClick+'">'+btnLabel+'</button>';
+    html+='</div></div></div>';
+  }
+  document.getElementById("carsGrid").innerHTML=html;
+}
+
+function filterCars(cat){
+  document.querySelectorAll(".filter-tab").forEach(function(t){t.classList.remove("active");});
+  document.querySelectorAll(".filter-tab").forEach(function(t){
+    var en=t.getAttribute("data-en")||t.textContent.trim();
+    var match=cat==="all"?(en==="All"||en==="Tous"):en===cat;
+    if(match)t.classList.add("active");
+  });
+  renderCars(cat==="all"?cars:cars.filter(function(c){return c.category===cat;}));
+}
+
+var currentCar=null;
+function openModal(id){
+  currentCar=cars.find(function(c){return c.id===id;});
+  document.getElementById("modalCarName").textContent=currentCar.name+" \u2014 "+currentCar.model;
+  document.getElementById("summaryRate").textContent=currentCar.price+" MAD";
+  document.getElementById("summaryDays").textContent="\u2014";
+  document.getElementById("summaryTotal").textContent="\u2014";
+  var today=new Date().toISOString().split("T")[0];
+  var tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+  var tomorrowStr=tomorrow.toISOString().split("T")[0];
+  document.getElementById("mPickup").min=today;
+  document.getElementById("mReturn").min=tomorrowStr;
+  document.getElementById("mPickup").value="";
+  document.getElementById("mReturn").value="";
+  document.getElementById("bookingModal").classList.add("active");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){document.getElementById("bookingModal").classList.remove("active");document.body.style.overflow="";}
+
+function calcPrice(){
+  var p=document.getElementById("mPickup").value;
+  var r=document.getElementById("mReturn").value;
+  if(p){
+    var minRet=new Date(p);minRet.setDate(minRet.getDate()+1);
+    document.getElementById("mReturn").min=minRet.toISOString().split("T")[0];
+    if(r&&r<=p){document.getElementById("mReturn").value="";r="";}
+  }
+  if(p&&r&&currentCar){
+    var days=Math.ceil((new Date(r)-new Date(p))/86400000);
+    if(days>=1){
+      document.getElementById("summaryDays").textContent=days+(isEN?(days>1?" days":" day"):(days>1?" jours":" jour"));
+      document.getElementById("summaryTotal").textContent=(days*currentCar.price).toLocaleString()+" MAD";
+    }else{
+      document.getElementById("summaryDays").textContent="—";
+      document.getElementById("summaryTotal").textContent="—";
+    }
+  }
+}
+
+function submitBooking(){
+  var fn=document.getElementById("mFirstName").value.trim();
+  var ln=document.getElementById("mLastName").value.trim();
+  var ph=document.getElementById("mPhone").value.trim();
+  var pk=document.getElementById("mPickup").value;
+  var rt=document.getElementById("mReturn").value;
+  var loc=document.getElementById("mLocation").value;
+  if(!fn||!ln||!ph||!pk||!rt){
+    alert(isEN?"Please fill in all required fields.":"Veuillez remplir tous les champs obligatoires.");
+    return;
+  }
+  var rawDays=Math.ceil((new Date(rt)-new Date(pk))/86400000);
+  var days=rawDays<1?1:rawDays; // minimum 1 day
+  var total=days*currentCar.price;
+  var msg;
+  if(isEN){
+    msg="*New Booking Request \u2014 Mengouchi Cars*\n\n"
+      +"*Car:* "+currentCar.name+" ("+currentCar.model+")\n"
+      +"*Client:* "+fn+" "+ln+"\n"
+      +"*Phone:* "+ph+"\n"
+      +"*Pickup Date:* "+pk+"\n"
+      +"*Return Date:* "+rt+"\n"
+      +"*Duration:* "+days+" day"+(days>1?"s":"")+"\n"
+      +"*Location:* "+loc+"\n"
+      +"*Estimated Total:* "+total.toLocaleString()+" MAD\n\n"
+      +"_Sent from Mengouchi Cars website_";
+  } else {
+    msg="*Nouvelle R\u00e9servation \u2014 Mengouchi Cars*\n\n"
+      +"*Voiture:* "+currentCar.name+" ("+currentCar.model+")\n"
+      +"*Client:* "+fn+" "+ln+"\n"
+      +"*T\u00e9l:* "+ph+"\n"
+      +"*Date d\u00e9part:* "+pk+"\n"
+      +"*Date retour:* "+rt+"\n"
+      +"*Dur\u00e9e:* "+days+" jour"+(days>1?"s":"")+"\n"
+      +"*Lieu:* "+loc+"\n"
+      +"*Total estim\u00e9:* "+total.toLocaleString()+" MAD\n\n"
+      +"_Envoy\u00e9 depuis le site Mengouchi Cars_";
+  }
+  closeModal();
+  document.getElementById("successModal").classList.add("active");
+  setTimeout(function(){
+    window.open("https://wa.me/212701171805?text="+encodeURIComponent(msg),"_blank");
+  },500);
+}
+
+function showSuccess(){document.getElementById("successModal").classList.add("active");}
+document.getElementById("bookingModal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+window.addEventListener("scroll",function(){document.getElementById("topbar").classList.toggle("scrolled",window.scrollY>60);});
+if(localStorage.getItem("theme")==="light"){isDark=false;document.body.classList.add("light");document.querySelector(".theme-toggle").innerHTML="&#127769;";}
+if(localStorage.getItem("lang")==="fr"){isEN=false;document.querySelector(".lang-toggle").textContent="EN";document.querySelectorAll("[data-fr]").forEach(function(el){if(el.tagName!=="INPUT"&&el.tagName!=="TEXTAREA")el.innerHTML=el.getAttribute("data-fr");});}
+renderCars();
+</script>
+</body>
+</html>
